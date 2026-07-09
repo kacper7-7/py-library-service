@@ -1,0 +1,98 @@
+[
+  {
+    "model": "payment.payment",
+    "pk": 1,
+    "fields": {
+      "status": "paid",
+      "type": "payment",
+      "borrowing": 1,
+      "session_url": "https://checkout.payment.com/pay/cs_test_a1B2c3D4e5F6g7H8",
+      "session_id": "cs_test_a1B2c3D4e5F6g7H8",
+      "money_to_pay": "35.00"
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 2,
+    "fields": {
+      "status": "paid",
+      "type": "fine",
+      "borrowing": 2,
+      "session_url": "https://checkout.payment.com/pay/cs_test_x9Y8z7W6v5U4t3S2",
+      "session_id": "cs_test_x9Y8z7W6v5U4t3S2",
+      "money_to_pay": "10.00"
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 3,
+    "fields": {
+      "status": "pending",
+      "type": "payment",
+      "borrowing": 4,
+      "session_url": "https://checkout.payment.com/pay/cs_test_q1W2e3R4t5Y6u7I8",
+      "session_id": "cs_test_q1W2e3R4t5Y6u7I8",
+      "money_to_pay": "12.50"
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 4,
+    "fields": {
+      "status": "pending",
+      "type": "payment",
+      "borrowing": 5,
+      "session_url": null,
+      "session_id": null,
+      "money_to_pay": "25.00"
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 5,
+    "fields": {
+      "status": "paid",
+      "type": "payment",
+      "borrowing": 6,
+      "session_url": "https://checkout.payment.com/pay/cs_test_p0O9i8U7y6T5r4E3",
+      "session_id": "cs_test_p0O9i8U7y6T5r4E3",
+      "money_to_pay": "18.00"
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 6,
+    "fields": {
+      "status": "pending",
+      "type": "fine",
+      "borrowing": 8,
+      "session_url": "https://checkout.payment.com/pay/cs_test_l1K2j3H4g5F6d7S8",
+      "session_id": "cs_test_l1K2j3H4g5F6d7S8",
+      "money_to_pay": "5.50"
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 7,
+    "fields": {
+      "status": "pending",
+      "type": "payment",
+      "borrowing": 7,
+      "session_url": null,
+      "session_id": null,
+      "money_to_pay": "30.00"
+    }
+  },
+  {
+    "model": "payment.payment",
+    "pk": 8,
+    "fields": {
+      "status": "paid",
+      "type": "payment",
+      "borrowing": 10,
+      "session_url": "https://checkout.payment.com/pay/cs_test_z1X2c3V4b5N6m7M8",
+      "session_id": "cs_test_z1X2c3V4b5N6m7M8",
+      "money_to_pay": "14.00"
+    }
+  }
+]
