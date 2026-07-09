@@ -8,7 +8,6 @@ from .serializers import (
 
 
 class PaymentViewSet(viewsets.ModelViewSet):
-    queryset = Payment.objects.select_related("borrowing")
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -18,6 +17,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return PaymentSerializer
 
     def get_queryset(self):
-        return Payment.objects.select_related("borrowing").filter(
+        queryset = Payment.objects.select_related("borrowing").filter(
             borrowing__user__id=self.request.user.pk
         )
+
+        return queryset
