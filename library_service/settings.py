@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "book",
     "user",
-    "rest_framework",
+    "borrowings" "rest_framework",
 ]
 
 MIDDLEWARE = [
