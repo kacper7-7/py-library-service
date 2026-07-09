@@ -1,0 +1,65 @@
+[
+  {
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$wG2zF9Z4z9x0$g4+w/y...<tutaj_musi_byc_hash>",
+      "last_login": null,
+      "is_superuser": true,
+      "first_name": "Admin",
+      "last_name": "Główny",
+      "email": "admin@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-10-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$wG2zF9Z4z9x0$g4+w/y...<tutaj_musi_byc_hash>",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Jan",
+      "last_name": "Kowalski",
+      "email": "jan.kowalski@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-10-02T15:30:00Z"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 1,
+    "fields": {
+      "title": "Django dla początkujących",
+      "author": 2,
+      "cover": "soft",
+      "inventory": 15,
+      "daily_fee": "2.50"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 2,
+    "fields": {
+      "title": "Zaawansowany Python w praktyce",
+      "author": 2,
+      "cover": "hard",
+      "inventory": 5,
+      "daily_fee": "5.00"
+    }
+  },
+  {
+    "model": "book.book",
+    "pk": 3,
+    "fields": {
+      "title": "Wzorce projektowe",
+      "author": 1,
+      "cover": "hard",
+      "inventory": 2,
+      "daily_fee": "12.99"
+    }
+  }
+]
