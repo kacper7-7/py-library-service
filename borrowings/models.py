@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from book.models import Book
 from django.conf import settings
@@ -12,3 +14,20 @@ class Borrowing(models.Model):
 
     def __str__(self):
         return f"{self.user.full_name} borrowed {self.book.title}."
+
+    @property
+    def money_to_pay(self):
+
+        if self.actual_return_date:
+            fine_payment = self.payments.filter(type="fine").first()
+            if fine_payment:
+                return fine_payment.money_to_pay
+
+        end_date = self.actual_return_date or date.today()
+
+        if end_date > self.expected_return:
+            overdue_days = (end_date - self.expected_return).days
+            FINE_MULTIPLIER = 3.00
+            return FINE_MULTIPLIER * overdue_days * self.book.daily_fee
+
+        return 0.00

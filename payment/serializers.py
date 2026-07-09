@@ -24,3 +24,5 @@ class PaymentDetailSerializer(serializers.ModelSerializer):
             "session_id",
             "money_to_pay",
         ]
+
+        read_only_fields = ["money_to_pay", "session_url", "session_id"]
