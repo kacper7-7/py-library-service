@@ -8,7 +8,6 @@ from borrowings.serializers import (
 
 
 class BorrowingViewSet(viewsets.ModelViewSet):
-    queryset = Borrowing.objects.select_related("book", "user")
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -16,3 +15,8 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         if self.action == "create" or self.action == "update":
             return BorrowingCreateSerializer
         return BorrowingSerializer
+
+    def get_queryset(self):
+        return Borrowing.objects.select_related("book", "user").filter(
+            user__id=self.request.user.pk
+        )
