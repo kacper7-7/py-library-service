@@ -16,3 +16,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return PaymentDetailSerializer
         return PaymentSerializer
+
+    def get_queryset(self):
+        return Payment.objects.select_related("borrowing").filter(
+            borrowing__user__id=self.request.user.pk
+        )
