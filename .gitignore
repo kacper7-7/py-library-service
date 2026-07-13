@@ -1,8 +1,27 @@
-.idea
-idea/
+.env
 
-venv
-
-__pycache__
 
 db.sqlite3
+db.sqlite3-journal
+
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+venv/
+env/
+.venv/
+
+
+/media/
+
+
+postgres_data/
+
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

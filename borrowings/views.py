@@ -20,3 +20,6 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         return Borrowing.objects.select_related("book", "user").filter(
             user__id=self.request.user.pk
         )
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)

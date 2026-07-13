@@ -1,0 +1,22 @@
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Środowisko wirtualne (kontener ma własnego, globalnego Pythona)
+venv/
+env/
+.venv/
+
+# Bazy danych z dysku lokalnego
+db.sqlite3
+postgres_data/
+
+# Narzędzia Gito-podobne
+.git/
+.gitignore
+
+
+.vscode/
+.idea/
+.DS_Store
