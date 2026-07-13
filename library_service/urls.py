@@ -34,6 +34,7 @@ urlpatterns = [
     path("api/", include("user.urls", namespace="user")),
     path("api/", include("borrowings.urls", namespace="borrowing")),
     path("api/", include("payment.urls", namespace="payment")),
+    path("api/", include("notification.urls", namespace="notification")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token-verify"),
