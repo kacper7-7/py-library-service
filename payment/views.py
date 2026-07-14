@@ -1,5 +1,7 @@
 import stripe
-from rest_framework import viewsets, status
+from rest_framework import viewsets
+
+import payment
 from .models import Payment
 from .serializers import (
     PaymentListSerializer,
@@ -48,7 +50,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
     # Otwieramy endpoint cancel:
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def cancel(self, request):
-        return Response({"message": "Płatność została anulowana (zwrócono na stronę)."})
+
+        return Response({"message": f"You can still pay in 24 hours."})
 
 
 @csrf_exempt
