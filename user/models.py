@@ -6,6 +6,8 @@ from django.utils.translation import gettext as _
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
         if not email:
             raise ValueError("User must enter an e-mail address")
         email = self.normalize_email(email)
