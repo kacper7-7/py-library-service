@@ -1,5 +1,7 @@
 import stripe
-from rest_framework import viewsets, status
+from rest_framework import viewsets
+
+import payment
 from .models import Payment
 from .serializers import (
     PaymentListSerializer,
@@ -10,6 +12,15 @@ from rest_framework.response import Response
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import (
+    api_view,
+    permission_classes,
+    authentication_classes,
+    action,
+)
+from rest_framework.permissions import AllowAny
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class PaymentViewSet(viewsets.ModelViewSet):
@@ -28,52 +39,25 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        payment = serializer.save()
+    # Otwieramy endpoint success dla przeglądarki bez tokena JWT:
+    @action(detail=False, methods=["get"], permission_classes=[AllowAny])
+    def success(self, request):
+        session_id = request.query_params.get("session_id")
+        return Response(
+            {"message": "Płatność zakończona sukcesem!", "session_id": session_id}
+        )
 
-        amount_in_cents = int(payment.money_to_pay * 100)
+    # Otwieramy endpoint cancel:
+    @action(detail=False, methods=["get"], permission_classes=[AllowAny])
+    def cancel(self, request):
 
-        success_url = request.build_absolute_uri("/api/payments/success/")
-        cancel_url = request.build_absolute_uri("/api/payments/cancel/")
-
-        try:
-            checkout_session = stripe.checkout.Session.create(
-                payment_method_types=["card"],
-                line_items=[
-                    {
-                        "price_data": {
-                            "currency": "usd",
-                            "unit_amount": amount_in_cents,
-                            "product_data": {
-                                "name": f"Payment for borrowing {payment.borrowing_id}",
-                            },
-                        },
-                        "quantity": 1,
-                    },
-                ],
-                mode="payment",
-                success_url=success_url + "?session_id={CHECKOUT_SESSION_ID}",
-                cancel_url=cancel_url,
-            )
-
-            payment.session_url = checkout_session.url
-            payment.session_id = checkout_session.id
-            payment.save()
-
-            return Response(
-                {"message": "Payment initiated.", "payment_url": checkout_session.url},
-                status=status.HTTP_201_CREATED,
-            )
-        except Exception as e:
-            payment.delete()
-            return Response(
-                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        return Response({"message": f"You can still pay in 24 hours."})
 
 
 @csrf_exempt
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
@@ -86,13 +70,12 @@ def stripe_webhook(request):
     except ValueError as e:
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
-
         return HttpResponse(status=400)
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
 
-        session_id = session.get("id")
+        session_id = session.id
 
         try:
             payment = Payment.objects.get(session_id=session_id)
@@ -101,5 +84,11 @@ def stripe_webhook(request):
             print(f"Zaktualizowano płatność {payment.id} na OPŁACONA!")
         except Payment.DoesNotExist:
             print(f"Błąd: Nie znaleziono płatności dla sesji {session_id}")
+        except Payment.MultipleObjectsReturned:
+            print(
+                f"Błąd krytyczny: Znaleziono DUPLIKAT sesji w bazie! Usuń stare płatności."
+            )
+        except Exception as e:
+            print(f"Inny błąd bazy danych w Pythona: {e}")
 
     return HttpResponse(status=200)

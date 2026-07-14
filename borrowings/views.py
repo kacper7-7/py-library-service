@@ -17,8 +17,10 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         return BorrowingSerializer
 
     def get_queryset(self):
-        return Borrowing.objects.select_related("book", "user").filter(
-            user__id=self.request.user.pk
+        return (
+            Borrowing.objects.select_related("book", "user")
+            .prefetch_related("payments")
+            .filter(user__id=self.request.user.pk)
         )
 
     def perform_create(self, serializer):
