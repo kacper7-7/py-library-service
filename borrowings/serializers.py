@@ -115,3 +115,10 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
             )
 
         return attrs
+
+
+class BorrowingReturnSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Borrowing
+        fields = ["actual_return_date"]
+        read_only_fields = ["actual_return_date"]
