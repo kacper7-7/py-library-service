@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import transaction
 from rest_framework import serializers
 from book.models import Book
@@ -9,6 +10,7 @@ from payment.utils import create_stripe_session
 
 class BorrowingSerializer(serializers.ModelSerializer):
     payments = PaymentSerializer(many=True, read_only=True)
+    is_active = serializers.SerializerMethodField()
 
     class Meta:
         model = Borrowing
@@ -19,7 +21,20 @@ class BorrowingSerializer(serializers.ModelSerializer):
             "actual_return_date",
             "book",
             "payments",
+            "is_active",
         ]
+
+    def get_is_active(self, obj):
+        if not obj.actual_return_date:
+            return True
+        return False
+
+
+class BorrowingAdminSerializer(BorrowingSerializer):
+    user_id = serializers.IntegerField(source="user.id", read_only=True)
+
+    class Meta(BorrowingSerializer.Meta):
+        fields = BorrowingSerializer.Meta.fields + ["user_id"]
 
 
 class BorrowingDetailSerializer(serializers.ModelSerializer):
@@ -81,3 +96,22 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
             book.inventory += 1
             book.save()
         return super().update(instance, validated_data)
+
+    def validate(self, attrs):
+        today = timezone.now().date()
+        borrow_date = attrs.get("borrow_date")
+        expected_return = attrs.get("expected_return")
+
+        if borrow_date and borrow_date < today:
+            raise serializers.ValidationError(
+                {"borrow_date": "Borrow date cannot be from the past!"}
+            )
+
+        if expected_return and borrow_date and expected_return < borrow_date:
+            raise serializers.ValidationError(
+                {
+                    "expected_return": "Expected return data must be later than borrow date!"
+                }
+            )
+
+        return attrs
