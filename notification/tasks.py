@@ -1,10 +1,7 @@
 from celery import shared_task
 from django.db import close_old_connections
 from django.utils import timezone
-from redis.commands.search.reducers import count
-
 from borrowings.models import Borrowing
-from user.models import User
 from .models import Notification
 from .utils import send_telegram_message
 

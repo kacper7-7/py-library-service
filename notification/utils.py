@@ -22,8 +22,8 @@ def send_telegram_message(message: str) -> bool:
         response.raise_for_status()
         return True
     except requests.exceptions.RequestException as e:
-        details = e.response.text if e.response is not None else "Brak odpowiedzi"
+        details = e.response.text if e.response is not None else "No response"
         logger.error(
-            f"Error during send notification to Telegram: {e} | Powód: {details}"
+            f"Error during send notification to Telegram: {e} | Reason: {details}"
         )
         return False
