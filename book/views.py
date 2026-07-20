@@ -4,7 +4,7 @@ from book.permissions import IsAdminOrReadOnly
 from book.serializers import BookSerializer
 
 
-class BookView(viewsets.ModelViewSet):
+class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
-    queryset = Book.objects.select_related("author")
+    queryset = Book.objects.all()
     permission_classes = [IsAdminOrReadOnly]
