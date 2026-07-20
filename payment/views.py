@@ -33,19 +33,16 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return PaymentSerializer
 
     def get_queryset(self):
-        queryset = Payment.objects.select_related("borrowing").filter(
-            borrowing__user__id=self.request.user.pk
-        )
+        queryset = Payment.objects.select_related("borrowing")
 
-        return queryset
+        if self.request.user.is_staff:
+            return queryset
+        return queryset.filter(borrowing__user=self.request.user)
 
-    # Otwieramy endpoint success dla przeglądarki bez tokena JWT:
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def success(self, request):
         session_id = request.query_params.get("session_id")
-        return Response(
-            {"message": "Płatność zakończona sukcesem!", "session_id": session_id}
-        )
+        return Response({"message": "Payment successful!", "session_id": session_id})
 
     # Otwieramy endpoint cancel:
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
@@ -79,16 +76,16 @@ def stripe_webhook(request):
 
         try:
             payment = Payment.objects.get(session_id=session_id)
-            payment.status = "PAID"
+            payment.status = "paid"
             payment.save()
-            print(f"Zaktualizowano płatność {payment.id} na OPŁACONA!")
+            print(f"Updated payment {payment.id} status to PAID!")
         except Payment.DoesNotExist:
-            print(f"Błąd: Nie znaleziono płatności dla sesji {session_id}")
+            print(f"Error: Payment not found for session {session_id}")
         except Payment.MultipleObjectsReturned:
             print(
-                f"Błąd krytyczny: Znaleziono DUPLIKAT sesji w bazie! Usuń stare płatności."
+                f"Critical Error: Duplicate session found in database! Remove old payments."
             )
         except Exception as e:
-            print(f"Inny błąd bazy danych w Pythona: {e}")
+            print(f"Database error in Python: {e}")
 
     return HttpResponse(status=200)

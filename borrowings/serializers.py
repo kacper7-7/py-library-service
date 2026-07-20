@@ -4,6 +4,7 @@ from rest_framework import serializers
 from book.models import Book
 from book.serializers import BookSerializer
 from borrowings.models import Borrowing
+from notification.tasks import send_telegram_task
 from payment.serializers import PaymentSerializer
 from payment.utils import create_stripe_session
 
@@ -85,17 +86,19 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
 
             except Exception as e:
                 raise serializers.ValidationError({"stripe_error": str(e)})
-        return borrowing
 
-    def update(self, instance, validated_data):
-        if (
-            "actual_return_date" in validated_data
-            and instance.actual_return_date is None
-        ):
-            book = instance.book
-            book.inventory += 1
-            book.save()
-        return super().update(instance, validated_data)
+            user = borrowing.user
+            message = (
+                f"<b>New borrowing!</b>\n\n"
+                f"<b>User:</b> {user.email}\n"
+                f"<b>Book:</b> {book.title}\n"
+                f"<b>Date of borrow:</b> {borrowing.borrow_date}\n"
+                f"<b>Estimated return:</b> {borrowing.expected_return}\n"
+            )
+
+            send_telegram_task.delay(message)
+
+        return borrowing
 
     def validate(self, attrs):
         today = timezone.now().date()

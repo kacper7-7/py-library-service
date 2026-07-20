@@ -25,6 +25,15 @@ services:
       - web
       - redis
 
+  celery-beat:
+    build: .
+    command: sh -c "python manage.py wait_for_db && celery -A library_service beat --loglevel=info"
+    depends_on:
+      - redis
+      - web
+    volumes:
+      - .:/app
+
   db:
     image: postgres:16-alpine
     env_file:
