@@ -4,7 +4,7 @@ from .models import Payment
 
 def create_stripe_session(borrowing, request):
 
-    payment = Payment.objects.create(borrowing=borrowing, status="PENDING")
+    payment = Payment.objects.create(borrowing=borrowing, status="pending")
 
     amount_in_cents = int(payment.money_to_pay * 100)
 
