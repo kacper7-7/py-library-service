@@ -1,4 +1,6 @@
 from django.db import transaction
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.decorators import action
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -36,11 +38,23 @@ class BorrowingViewSet(viewsets.ModelViewSet):
 
             if user_id:
                 user_id = user_id.split(",")
-                return queryset.filter(user__id_in=user_id)
+                return queryset.filter(user__id__in=user_id)
             return queryset
 
         else:
             return queryset.filter(user__id=self.request.user.pk)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="user_id",
+                type=OpenApiTypes.STR,
+                description="Search borrowings by user id",
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
@@ -49,12 +63,17 @@ class BorrowingViewSet(viewsets.ModelViewSet):
     def return_book(self, request, pk=None):
         borrowing = self.get_object()
 
+        if borrowing.actual_return_date is not None:
+            return Response(
+                {"message": "You have already returned this book!"},
+                status.HTTP_400_BAD_REQUEST,
+            )
+
         with transaction.atomic():
-            if borrowing.actual_return_date is None:
-                borrowing.book.inventory += 1
-                borrowing.book.save()
-                borrowing.actual_return_date = timezone.now().date()
-                borrowing.save()
+            borrowing.book.inventory += 1
+            borrowing.book.save()
+            borrowing.actual_return_date = timezone.now().date()
+            borrowing.save()
 
         serializer = self.get_serializer(borrowing)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -100,16 +100,6 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
 
         return borrowing
 
-    def update(self, instance, validated_data):
-        if (
-            "actual_return_date" in validated_data
-            and instance.actual_return_date is None
-        ):
-            book = instance.book
-            book.inventory += 1
-            book.save()
-        return super().update(instance, validated_data)
-
     def validate(self, attrs):
         today = timezone.now().date()
         borrow_date = attrs.get("borrow_date")
