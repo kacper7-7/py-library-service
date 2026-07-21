@@ -102,13 +102,8 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         today = timezone.now().date()
-        borrow_date = attrs.get("borrow_date")
+        borrow_date = attrs.get("borrow_date", today)
         expected_return = attrs.get("expected_return")
-
-        if borrow_date and borrow_date < today:
-            raise serializers.ValidationError(
-                {"borrow_date": "Borrow date cannot be from the past!"}
-            )
 
         if expected_return and borrow_date and expected_return < borrow_date:
             raise serializers.ValidationError(

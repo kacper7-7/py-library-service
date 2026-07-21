@@ -25,7 +25,6 @@ class BookTestCase(TestCase):
         self.user_client = APIClient()
         self.user_client.force_authenticate(user=self.regular_user)
 
-        # 3. Klient dla gościa (niezalogowany - opcjonalnie, zwykłe APIClient nie ma auth)
         self.anon_client = APIClient()
 
         self.book_1 = Book.objects.create(
