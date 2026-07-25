@@ -1,7 +1,5 @@
 import stripe
 from rest_framework import viewsets
-
-import payment
 from .models import Payment
 from .serializers import (
     PaymentListSerializer,
@@ -44,7 +42,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
         session_id = request.query_params.get("session_id")
         return Response({"message": "Payment successful!", "session_id": session_id})
 
-    # Otwieramy endpoint cancel:
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def cancel(self, request):
 

@@ -27,3 +27,6 @@ postgres_data/
 Thumbs.db
 
 celerybeat-schedule
+celerybeat-schedule.*
+celerybeat.pid
+celerybeat-schedule*
