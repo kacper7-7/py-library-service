@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-r%6ib^5=c&hbks##s#q&ej@4!ihl@7^5*-%@w!-)tfp)n6fo^6"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -143,9 +143,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_PAGINATION_CLASSES": "rest_framework.pagination.PageNumberPagination"
     "PAGE_SIZE",
-    # "DEFAULT_AUTHENTICATION_CLASSES": (
-    #     "rest_framework_simplejwt.authentication.JWTAuthentication",
-    # ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 
@@ -167,8 +167,8 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 
 CELERY_BEAT_SCHEDULE = {
-    "send-overdue-notifications-every-minute": {
+    "send-overdue-notifications-daily": {
         "task": "notification.tasks.every_day_notification",
-        "schedule": crontab(minute="*"),
+        "schedule": crontab(hour=10, minute=0),
     },
 }
