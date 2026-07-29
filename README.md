@@ -24,6 +24,11 @@ RESTful API backend for managing a library system, built with Django, Django RES
 
 ---
 
+## 🗄️ Database Schema
+![models.png](images/models.png)
+
+---
+
 ## ⚙️ Installation & Running Locally (Docker)
 
 The easiest way to run the application is using Docker Compose.
