@@ -18,7 +18,15 @@ class BookSerializerTestCase(TestCase):
         self.serializer = BookSerializer(instance=self.book)
 
     def test_contains_expected_fields(self):
-        expected_fields = {"id", "title", "author", "cover", "inventory", "daily_fee"}
+        expected_fields = {
+            "id",
+            "title",
+            "author",
+            "cover",
+            "inventory",
+            "daily_fee",
+            "image",
+        }
 
         data = self.serializer.data
 

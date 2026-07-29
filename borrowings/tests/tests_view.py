@@ -245,4 +245,4 @@ class BorrowingsTestCase(TestCase):
 
         response = self.anon_client.get(self.borrowings_list_url)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

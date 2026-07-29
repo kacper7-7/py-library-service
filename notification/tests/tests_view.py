@@ -38,7 +38,7 @@ class NotificationViewSetTestCase(TestCase):
 
     def test_anonymous_user_cannot_access_notifications(self):
         response = self.anon_client.get(self.list_url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_user_can_list_only_own_notifications(self):
         response = self.client_1.get(self.list_url)
