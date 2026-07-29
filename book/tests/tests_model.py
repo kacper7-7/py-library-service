@@ -61,7 +61,7 @@ class BookImageTestCase(TestCase):
     def test_book_image_upload_and_custom_name(self):
 
         book = Book.objects.create(
-            title="test-title",
+            title="Test title",
             author="test_author",
             cover="soft",
             inventory=10,
