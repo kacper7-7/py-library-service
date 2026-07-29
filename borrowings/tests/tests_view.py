@@ -1,4 +1,6 @@
 from datetime import timedelta
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework import status
@@ -7,6 +9,7 @@ from rest_framework.test import APIClient
 from django.utils import timezone
 from book.models import Book
 from borrowings.models import Borrowing
+from unittest.mock import patch
 
 
 class BorrowingsTestCase(TestCase):
@@ -246,3 +249,48 @@ class BorrowingsTestCase(TestCase):
         response = self.anon_client.get(self.borrowings_list_url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    @patch("borrowings.views.create_stripe_session")
+    def test_return_book_overdue_generates_fine(self, mock_create_stripe_session):
+        mock_create_stripe_session.return_value = (
+            "https://checkout.stripe.com/fake-fine-url"
+        )
+
+        book = Book.objects.create(
+            title="Overdue Book",
+            author="Late Author",
+            cover="soft",
+            inventory=0,
+            daily_fee=Decimal("2.00"),
+        )
+
+        expected_date = timezone.now().date() - timedelta(days=5)
+
+        borrowing = Borrowing.objects.create(
+            book=book,
+            user=self.regular_user,
+            expected_return=expected_date,
+        )
+
+        return_book_url = reverse(
+            "borrowing:borrowing-return-book", kwargs={"pk": borrowing.pk}
+        )
+
+        response = self.user_client.post(return_book_url)
+
+        book.refresh_from_db()
+        borrowing.refresh_from_db()
+
+        self.assertEqual(book.inventory, 1)
+        self.assertEqual(borrowing.actual_return_date, timezone.now().date())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertIn("payment_url", response.data)
+        self.assertEqual(
+            response.data["payment_url"], "https://checkout.stripe.com/fake-fine-url"
+        )
+        self.assertIn("overdue fine", response.data["message"])
+
+        mock_create_stripe_session.assert_called_once()
+        kwargs = mock_create_stripe_session.call_args.kwargs
+        self.assertEqual(kwargs.get("payment_type"), "fine")
