@@ -11,12 +11,6 @@ from PIL import Image
 
 class BookTestCase(TestCase):
     def setUp(self):
-        self.client = APIClient()
-        user = get_user_model().objects.create_user(
-            email="user@example.com", password="password"
-        )
-
-        self.client.force_authenticate(user=user)
 
         self.book_1 = Book.objects.create(
             title="The Pragmatic Programmer",
