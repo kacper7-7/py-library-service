@@ -6,7 +6,6 @@ router = DefaultRouter()
 router.register("users", UserViewSet, basename="user")
 
 urlpatterns = [
-    # path("users/create/", UserCreateView.as_view(), name="user-create"),
     path("", include(router.urls)),
 ]
 
