@@ -88,6 +88,7 @@ docker-compose exec web python manage.py test borrowings
 docker-compose exec web python manage.py test core
 docker-compose exec web python manage.py test notification
 docker-compose exec web python manage.py test payment
+docker-compose exec web python manage.py test user
 ```
 
 ## 📖 API Documentation
