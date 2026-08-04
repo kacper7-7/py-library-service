@@ -1,5 +1,5 @@
 from datetime import date
-
+from decimal import Decimal
 from django.db import models
 from book.models import Book
 from django.conf import settings
@@ -27,7 +27,7 @@ class Borrowing(models.Model):
 
         if end_date > self.expected_return:
             overdue_days = (end_date - self.expected_return).days
-            FINE_MULTIPLIER = 3.00
-            return FINE_MULTIPLIER * overdue_days * self.book.daily_fee
+            FINE_MULTIPLIER = Decimal("3.00")
+            return FINE_MULTIPLIER * overdue_days * Decimal(str(self.book.daily_fee))
 
-        return 0.00
+        return Decimal("0.00")

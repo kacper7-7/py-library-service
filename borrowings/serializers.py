@@ -96,7 +96,7 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
                 f"<b>Estimated return:</b> {borrowing.expected_return}\n"
             )
 
-            send_telegram_task.delay(message)
+            transaction.on_commit(lambda: send_telegram_task.delay(message))
 
         return borrowing
 

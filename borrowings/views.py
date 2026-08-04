@@ -15,6 +15,8 @@ from borrowings.serializers import (
 )
 from django.utils import timezone
 
+from payment.utils import create_stripe_session
+
 
 class BorrowingViewSet(viewsets.ModelViewSet):
 
@@ -75,5 +77,27 @@ class BorrowingViewSet(viewsets.ModelViewSet):
             borrowing.actual_return_date = timezone.now().date()
             borrowing.save()
 
+            payment_url = None
+
+            if borrowing.money_to_pay > 0:
+                try:
+                    payment_url = create_stripe_session(
+                        borrowing=borrowing, request=request, payment_type="fine"
+                    )
+                except Exception as e:
+                    return Response(
+                        {"stripe_error": str(e)}, status=status.HTTP_400_BAD_REQUEST
+                    )
+
         serializer = self.get_serializer(borrowing)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        response_data = dict(serializer.data)
+
+        if payment_url:
+            response_data["message"] = (
+                "Book returned, but you have an overdue fine to pay!"
+            )
+            response_data["payment_url"] = payment_url
+        else:
+            response_data["message"] = "Book returned successfully on time!"
+
+        return Response(response_data, status=status.HTTP_200_OK)
