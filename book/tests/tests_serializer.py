@@ -1,5 +1,4 @@
 from django.test import TestCase
-
 from book.models import Book
 from book.serializers import BookSerializer
 

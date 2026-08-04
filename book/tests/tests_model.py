@@ -1,7 +1,5 @@
-from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
-from rest_framework.test import APIClient
 from book.models import Book
 import tempfile
 import shutil

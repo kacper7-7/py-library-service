@@ -1,6 +1,4 @@
 from django.db import models
-
-from book.models import Book
 from borrowings.models import Borrowing
 
 
