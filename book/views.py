@@ -6,5 +6,5 @@ from book.serializers import BookSerializer
 
 class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
-    queryset = Book.objects.all()
     permission_classes = [IsAdminOrReadOnly]
+    queryset = Book.objects.all()
