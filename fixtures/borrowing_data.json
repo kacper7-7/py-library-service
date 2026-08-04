@@ -1,0 +1,112 @@
+[
+  {
+    "model": "borrowings.borrowing",
+    "pk": 1,
+    "fields": {
+      "borrow_date": "2023-08-01",
+      "expected_return": "2023-08-15",
+      "actual_return_date": "2023-08-14",
+      "book": 1,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 2,
+    "fields": {
+      "borrow_date": "2023-09-10",
+      "expected_return": "2023-09-24",
+      "actual_return_date": "2023-09-26",
+      "book": 2,
+      "user": 1
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 3,
+    "fields": {
+      "borrow_date": "2023-10-05",
+      "expected_return": "2023-10-19",
+      "actual_return_date": "2023-10-10",
+      "book": 3,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 4,
+    "fields": {
+      "borrow_date": "2023-10-20",
+      "expected_return": "2023-11-03",
+      "actual_return_date": null,
+      "book": 1,
+      "user": 1
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 5,
+    "fields": {
+      "borrow_date": "2023-11-01",
+      "expected_return": "2023-11-15",
+      "actual_return_date": null,
+      "book": 2,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 6,
+    "fields": {
+      "borrow_date": "2023-07-15",
+      "expected_return": "2023-07-29",
+      "actual_return_date": "2023-07-29",
+      "book": 3,
+      "user": 1
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 7,
+    "fields": {
+      "borrow_date": "2023-11-10",
+      "expected_return": "2023-11-24",
+      "actual_return_date": null,
+      "book": 1,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 8,
+    "fields": {
+      "borrow_date": "2023-05-02",
+      "expected_return": "2023-05-16",
+      "actual_return_date": "2023-06-01",
+      "book": 2,
+      "user": 2
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 9,
+    "fields": {
+      "borrow_date": "2023-10-28",
+      "expected_return": "2023-11-11",
+      "actual_return_date": null,
+      "book": 3,
+      "user": 1
+    }
+  },
+  {
+    "model": "borrowings.borrowing",
+    "pk": 10,
+    "fields": {
+      "borrow_date": "2023-06-20",
+      "expected_return": "2023-07-04",
+      "actual_return_date": "2023-07-01",
+      "book": 1,
+      "user": 1
+    }
+  }
+]
