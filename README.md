@@ -2,7 +2,7 @@
 
 RESTful API backend for managing a library system, built with Django, Django REST Framework, Celery, and Docker.
 
-## 🚀 Technologies
+##  Technologies
 
 * **Python 3.12+** / **Django** / **Django REST Framework (DRF)**
 * **PostgreSQL** (Database)
@@ -13,7 +13,7 @@ RESTful API backend for managing a library system, built with Django, Django RES
 
 ---
 
-## 📋 Features
+##  Features
 
 * **Books Management:** Inventory tracking and daily fee management.
 * **Borrowings:** Create/return books, check active borrowings, automatically update inventory using database transactions, and handle late fee calculations.
@@ -24,12 +24,12 @@ RESTful API backend for managing a library system, built with Django, Django RES
 
 ---
 
-## 🗄️ Database Schema
+## 🗄 Database Schema
 ![models.png](images/models.png)
 
 ---
 
-## ⚙️ Installation & Running Locally (Docker)
+## Installation & Running Locally (Docker)
 
 The easiest way to run the application is using Docker Compose.
 
@@ -71,7 +71,7 @@ The application will be available at:
 docker-compose down
 ```
 
-## 🧪 Running Tests
+##  Running Tests
 
 The project includes unit and integration tests covering models, serializers, views, custom commands, and utility tasks.
 
@@ -91,7 +91,7 @@ docker-compose exec web python manage.py test payment
 docker-compose exec web python manage.py test user
 ```
 
-## 📖 API Documentation
+## API Documentation
 
 Once the server is running, you can access the interactive API documentation:
 
@@ -123,9 +123,9 @@ Once the server is running, you can access the interactive API documentation:
 ---
 
 
-## 📋 API Endpoints
+##  API Endpoints
 
-### 👤 Users (`/api/user/`)
+###  Users (`/api/user/`)
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/user/users/` | List all users |
@@ -135,7 +135,7 @@ Once the server is running, you can access the interactive API documentation:
 | GET | `/api/user/users/me/` | Current user profile |
 | PUT/PATCH | `/api/user/users/me/` | Update current user profile |
 
-### 📚 Books (`/api/books/`)
+###  Books (`/api/books/`)
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/books/` | List all books (Available to all) |
@@ -144,7 +144,7 @@ Once the server is running, you can access the interactive API documentation:
 | PUT/PATCH | `/api/books/{id}/` | Update book (Admin only) |
 | DELETE | `/api/books/{id}/` | Delete book (Admin only) |
 
-### 📋 Borrowings (`/api/borrowings/`)
+###  Borrowings (`/api/borrowings/`)
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/borrowings/` | List borrowings (Supports `?user_id=` filter for admins) |
@@ -153,7 +153,7 @@ Once the server is running, you can access the interactive API documentation:
 | POST | `/api/borrowings/{id}/return_book/` | Return a borrowed book |
 | DELETE | `/api/borrowings/{id}/` | Delete borrowing |
 
-### 💳 Payments (`/api/payments/`)
+###  Payments (`/api/payments/`)
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/payments/` | List payments |
@@ -162,13 +162,13 @@ Once the server is running, you can access the interactive API documentation:
 | GET | `/api/payments/cancel/` | Stripe cancel callback (Public) |
 | POST | `/api/payments/webhook/` | Stripe webhook listener (Public) |
 
-### 🔔 Notifications (`/api/notifications/`)
+###  Notifications (`/api/notifications/`)
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/notifications/` | List user's notifications (ReadOnly) |
 | GET | `/api/notifications/{id}/` | Retrieve notification details |
 
-### 📖 Documentation (`/api/doc/`)
+###  Documentation (`/api/doc/`)
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/doc/swagger/` | Interactive Swagger UI documentation |
